@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 #BEGIN_HEADER
-#END_HEADER
+from pprint import pprint
 
 from kb_gffupload.FastaGFFToGenome import FastaGFFToGenome
+#END_HEADER
 
 class kb_gffupload:
     '''
@@ -30,6 +31,7 @@ class kb_gffupload:
     # be found
     def __init__(self, config):
         #BEGIN_CONSTRUCTOR
+        self.cfg=config
         #END_CONSTRUCTOR
         pass
 

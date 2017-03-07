@@ -74,14 +74,26 @@ class kb_gffuploadTest(unittest.TestCase):
         return self.__class__.ctx
 
     # NOTE: According to Python unittest naming rules test method names should start from 'test'. # noqa
-    def test_your_method(self):
-        # Prepare test objects in workspace if needed using
-        # self.getWsClient().save_objects({'workspace': self.getWsName(),
-        #                                  'objects': []})
-        #
-        # Run your method by
-        # ret = self.getImpl().your_method(self.getContext(), parameters...)
-        #
+    def test_simple_upload(self):
+        gff_upload = self.getImpl()
+        fasta_path = "data/Test_v1.0.fa.gz"
+        gff_path = "data/Test_v1.0.gene.gff3.gz"
+        ws_obj_name = 'MyGenome'
+        ws_name = self.getWsName()
+
+        ### Test for a Local Function Call
+        print('attempting upload via local function directly')
+
+        result = gff_upload.fasta_gff_to_genome(self.getContext(), 
+            {
+                'fasta_file' : { 'path': fasta_path },
+                'gff_file' : { 'path' : gff_path },
+                'workspace_name':ws_name,
+                'genome_name':ws_obj_name
+            })[0]
+        pprint(result)
+        self.assertIsNotNone(result['genome_ref'])
+
         # Check returned data with
         # self.assertEqual(ret[...], ...) or other unittest methods
         pass

@@ -1,0 +1,16 @@
+{
+    "name" : "GFF Upload",
+    "short_description" : "Upload GFF/Fasta as Genome",
+    "long_description" : "Upload a combination of GFF and Fasta File as Genome and Assembly objects in workspace",
+    "tags" : {
+        "categories" : ["upload"],
+        "input": {
+            "file_types": ["Fasta","GFF"],
+            "kb_types": []
+        },
+        "output": {
+            "file_types": [],
+            "kb_types": ["KBaseGenomes.Genome","KBaseAssembly.Assembly"]
+        }
+    }
+}

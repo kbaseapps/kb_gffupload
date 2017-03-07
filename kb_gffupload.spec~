@@ -1,9 +1,0 @@
-/*
-A KBase module: kb_gffupload
-*/
-
-module kb_gffupload {
-    /*
-        Insert your typespec information here.
-    */
-};

@@ -25,7 +25,7 @@ class FastaGFFToGenome:
 
         # 2) construct the input directory staging area
 
-        input_directory =  os.path.join(self.cfg.sharedFolder, 'genome-upload-staging-'+str(uuid.uuid4()))
+        input_directory =  os.path.join(self.cfg['scratch'], 'genome-upload-staging-'+str(uuid.uuid4()))
         os.makedirs(input_directory)
 
         file_paths = self.stage_input(params,input_directory)
@@ -57,10 +57,10 @@ class FastaGFFToGenome:
         # 4) Do the upload
         pprint(parsed_params)
         result = upload_genome(
-                shock_service_url = self.cfg.shockURL,
-                handle_service_url = self.cfg.handleURL,
-                workspace_service_url = self.cfg.workspaceURL,
-                callback_url = self.cfg.callbackURL,
+                shock_service_url = self.cfg['shock-url'],
+                handle_service_url = self.cfg['handle-service-url'],
+                workspace_service_url = self.cfg['workspace-url'],
+                callback_url = os.environ['SDK_CALLBACK_URL'],
 
                 input_fasta_file=file_paths["fasta_file"],
                 input_gff_file=file_paths["gff_file"],
@@ -129,14 +129,14 @@ class FastaGFFToGenome:
 
     def set_defaults(self):
         default_params = {
-            'source':'Genbank',
-            'taxon_wsname': self.cfg.raw['taxon-workspace-name'],
-            'taxon_lookup_obj_name': self.cfg.raw['taxon-lookup-object-name'],
-            'taxon_reference': None,
+            'source':'Phytozome',
+#            'taxon_wsname': self.cfg['taxon-workspace-name'],
+#            'taxon_lookup_obj_name': self.cfg['taxon-lookup-object-name'],
+#            'taxon_reference': None,
 
-            'ontology_wsname': self.cfg.raw['ontology-workspace-name'],
-            'ontology_GO_obj_name': self.cfg.raw['ontology-gene-ontology-obj-name'],
-            'ontology_PO_obj_name': self.cfg.raw['ontology-plant-ontology-obj-name'],
+#            'ontology_wsname': self.cfg['ontology-workspace-name'],
+#            'ontology_GO_obj_name': self.cfg['ontology-gene-ontology-obj-name'],
+#            'ontology_PO_obj_name': self.cfg['ontology-plant-ontology-obj-name'],
 
             'release': None,
             'genetic_code': None,
@@ -169,9 +169,9 @@ class FastaGFFToGenome:
 
             if 'shock_id' in file and file['shock_id'] is not None:
                 # handle shock file
-                print('Downloading file from SHOCK node: ' + str(self.cfg.shockURL) + ' - ' + str(file['shock_id']))
+                print('Downloading file from SHOCK node: ' + str(self.cfg['shock-url']) + ' - ' + str(file['shock_id']))
                 sys.stdout.flush()
-                dfUtil = DataFileUtil(self.cfg.callbackURL)
+                dfUtil = DataFileUtil(os.environ['SDK_CALLBACK_URL'])
                 file_name = dfUtil.shock_to_file({'file_path': input_directory,
                                                   'shock_id': file['shock_id']
                                                   })['node_file_name']
@@ -206,7 +206,7 @@ class FastaGFFToGenome:
             if file_path is not None:
                 print("staged input file =" + file_path)
                 sys.stdout.flush()
-                dfUtil = DataFileUtil(self.cfg.callbackURL)
+                dfUtil = DataFileUtil(os.environ['SDK_CALLBACK_URL'])
                 dfUtil_result = dfUtil.unpack_file({ 'file_path': file_path })
                 file_paths[key]=dfUtil_result['file_path']
             else:
