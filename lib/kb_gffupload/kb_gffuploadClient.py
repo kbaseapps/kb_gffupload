@@ -35,32 +35,25 @@ class kb_gffupload(object):
 
     def fasta_gff_to_genome(self, params, context=None):
         """
-        :param params: instance of type "FastaGFFToGenomeParams" (genome_name
-           - becomes the name of the object workspace_name - the name of the
-           workspace it gets saved to. source - Source of the file typically
-           something like RefSeq or Ensembl taxon_ws_name - where the
-           reference taxons are : ReferenceTaxons taxon_reference - if
-           defined, will try to link the Genome to the specified taxonomy
-           object insteas of performing the lookup during upload release -
-           Release or version number of the data per example Ensembl has
-           numbered releases of all their data: Release 31
-           generate_ids_if_needed - If field used for feature id is not
-           there, generate ids (default behavior is raising an exception)
-           genetic_code - Genetic code of organism. Overwrites determined GC
-           from taxon object type - Reference, Representative or User upload)
-           -> structure: parameter "fasta_file" of type "File" -> structure:
-           parameter "path" of String, parameter "shock_id" of String,
-           parameter "ftp_url" of String, parameter "gff_file" of type "File"
-           -> structure: parameter "path" of String, parameter "shock_id" of
-           String, parameter "ftp_url" of String, parameter "genome_name" of
-           String, parameter "workspace_name" of String, parameter "source"
-           of String, parameter "taxon_wsname" of String, parameter
-           "taxon_reference" of String, parameter "release" of String,
-           parameter "genetic_code" of Long, parameter "type" of String,
-           parameter "metadata" of type "usermeta" -> mapping from String to
-           String
+        :param params: instance of type "FastaGFFToGenomeParams" (fasta_file
+           - file containing assembled contigs/chromosomes gff_file - file
+           containing gene models (_must_ contain 'gene', 'mRNA', and 'CDS')
+           genome_name - becomes the name of the object workspace_name - the
+           name of the workspace it gets saved to. source - Source of the
+           file typically something like RefSeq or Ensembl taxon_ws_name -
+           where the reference taxons are : ReferenceTaxons taxon_reference -
+           if defined, will try to link the Genome to the specified taxonomy
+           object release - Release or version number of the data
+           (i.e.Ensembl Release 31 or Phytozome Release V11) type -
+           Reference, Representative or User) -> structure: parameter
+           "fasta_file" of type "File_Path", parameter "gff_file" of type
+           "File_Path", parameter "genome_name" of String, parameter
+           "workspace_name" of String, parameter "source" of String,
+           parameter "taxon_wsname" of String, parameter "taxon_reference" of
+           String, parameter "release" of String, parameter "type" of String
         :returns: instance of type "GenomeSaveResult" -> structure: parameter
-           "genome_ref" of String
+           "genome_ref" of String, parameter "report_name" of String,
+           parameter "report_ref" of String
         """
         return self._client.call_method(
             'kb_gffupload.fasta_gff_to_genome',

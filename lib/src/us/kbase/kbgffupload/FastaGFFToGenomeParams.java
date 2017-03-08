@@ -14,19 +14,15 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 /**
  * <p>Original spec-file type: FastaGFFToGenomeParams</p>
  * <pre>
+ * fasta_file - file containing assembled contigs/chromosomes
+ * gff_file - file containing gene models (_must_ contain 'gene', 'mRNA', and 'CDS')
  * genome_name - becomes the name of the object
  * workspace_name - the name of the workspace it gets saved to.
  * source - Source of the file typically something like RefSeq or Ensembl
  * taxon_ws_name - where the reference taxons are : ReferenceTaxons
- * taxon_reference - if defined, will try to link the Genome to the specified
- * taxonomy object insteas of performing the lookup during upload
- * release - Release or version number of the data 
- *   per example Ensembl has numbered releases of all their data: Release 31
- * generate_ids_if_needed - If field used for feature id is not there, 
- *   generate ids (default behavior is raising an exception)
- * genetic_code - Genetic code of organism. Overwrites determined GC from 
- *   taxon object
- * type - Reference, Representative or User upload
+ * taxon_reference - if defined, will try to link the Genome to the specified taxonomy object
+ * release - Release or version number of the data (i.e.Ensembl Release 31 or Phytozome Release V11)
+ * type - Reference, Representative or User
  * </pre>
  * 
  */
@@ -41,244 +37,178 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "taxon_wsname",
     "taxon_reference",
     "release",
-    "genetic_code",
-    "type",
-    "metadata"
+    "type"
 })
 public class FastaGFFToGenomeParams {
 
-    /**
-     * <p>Original spec-file type: File</p>
-     * 
-     * 
-     */
     @JsonProperty("fasta_file")
-    private File fastaFile;
-    /**
-     * <p>Original spec-file type: File</p>
-     * 
-     * 
-     */
+    private String fastaFile;
     @JsonProperty("gff_file")
-    private File gffFile;
+    private String gffFile;
     @JsonProperty("genome_name")
-    private java.lang.String genomeName;
+    private String genomeName;
     @JsonProperty("workspace_name")
-    private java.lang.String workspaceName;
+    private String workspaceName;
     @JsonProperty("source")
-    private java.lang.String source;
+    private String source;
     @JsonProperty("taxon_wsname")
-    private java.lang.String taxonWsname;
+    private String taxonWsname;
     @JsonProperty("taxon_reference")
-    private java.lang.String taxonReference;
+    private String taxonReference;
     @JsonProperty("release")
-    private java.lang.String release;
-    @JsonProperty("genetic_code")
-    private Long geneticCode;
+    private String release;
     @JsonProperty("type")
-    private java.lang.String type;
-    @JsonProperty("metadata")
-    private Map<String, String> metadata;
-    private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
+    private String type;
+    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    /**
-     * <p>Original spec-file type: File</p>
-     * 
-     * 
-     */
     @JsonProperty("fasta_file")
-    public File getFastaFile() {
+    public String getFastaFile() {
         return fastaFile;
     }
 
-    /**
-     * <p>Original spec-file type: File</p>
-     * 
-     * 
-     */
     @JsonProperty("fasta_file")
-    public void setFastaFile(File fastaFile) {
+    public void setFastaFile(String fastaFile) {
         this.fastaFile = fastaFile;
     }
 
-    public FastaGFFToGenomeParams withFastaFile(File fastaFile) {
+    public FastaGFFToGenomeParams withFastaFile(String fastaFile) {
         this.fastaFile = fastaFile;
         return this;
     }
 
-    /**
-     * <p>Original spec-file type: File</p>
-     * 
-     * 
-     */
     @JsonProperty("gff_file")
-    public File getGffFile() {
+    public String getGffFile() {
         return gffFile;
     }
 
-    /**
-     * <p>Original spec-file type: File</p>
-     * 
-     * 
-     */
     @JsonProperty("gff_file")
-    public void setGffFile(File gffFile) {
+    public void setGffFile(String gffFile) {
         this.gffFile = gffFile;
     }
 
-    public FastaGFFToGenomeParams withGffFile(File gffFile) {
+    public FastaGFFToGenomeParams withGffFile(String gffFile) {
         this.gffFile = gffFile;
         return this;
     }
 
     @JsonProperty("genome_name")
-    public java.lang.String getGenomeName() {
+    public String getGenomeName() {
         return genomeName;
     }
 
     @JsonProperty("genome_name")
-    public void setGenomeName(java.lang.String genomeName) {
+    public void setGenomeName(String genomeName) {
         this.genomeName = genomeName;
     }
 
-    public FastaGFFToGenomeParams withGenomeName(java.lang.String genomeName) {
+    public FastaGFFToGenomeParams withGenomeName(String genomeName) {
         this.genomeName = genomeName;
         return this;
     }
 
     @JsonProperty("workspace_name")
-    public java.lang.String getWorkspaceName() {
+    public String getWorkspaceName() {
         return workspaceName;
     }
 
     @JsonProperty("workspace_name")
-    public void setWorkspaceName(java.lang.String workspaceName) {
+    public void setWorkspaceName(String workspaceName) {
         this.workspaceName = workspaceName;
     }
 
-    public FastaGFFToGenomeParams withWorkspaceName(java.lang.String workspaceName) {
+    public FastaGFFToGenomeParams withWorkspaceName(String workspaceName) {
         this.workspaceName = workspaceName;
         return this;
     }
 
     @JsonProperty("source")
-    public java.lang.String getSource() {
+    public String getSource() {
         return source;
     }
 
     @JsonProperty("source")
-    public void setSource(java.lang.String source) {
+    public void setSource(String source) {
         this.source = source;
     }
 
-    public FastaGFFToGenomeParams withSource(java.lang.String source) {
+    public FastaGFFToGenomeParams withSource(String source) {
         this.source = source;
         return this;
     }
 
     @JsonProperty("taxon_wsname")
-    public java.lang.String getTaxonWsname() {
+    public String getTaxonWsname() {
         return taxonWsname;
     }
 
     @JsonProperty("taxon_wsname")
-    public void setTaxonWsname(java.lang.String taxonWsname) {
+    public void setTaxonWsname(String taxonWsname) {
         this.taxonWsname = taxonWsname;
     }
 
-    public FastaGFFToGenomeParams withTaxonWsname(java.lang.String taxonWsname) {
+    public FastaGFFToGenomeParams withTaxonWsname(String taxonWsname) {
         this.taxonWsname = taxonWsname;
         return this;
     }
 
     @JsonProperty("taxon_reference")
-    public java.lang.String getTaxonReference() {
+    public String getTaxonReference() {
         return taxonReference;
     }
 
     @JsonProperty("taxon_reference")
-    public void setTaxonReference(java.lang.String taxonReference) {
+    public void setTaxonReference(String taxonReference) {
         this.taxonReference = taxonReference;
     }
 
-    public FastaGFFToGenomeParams withTaxonReference(java.lang.String taxonReference) {
+    public FastaGFFToGenomeParams withTaxonReference(String taxonReference) {
         this.taxonReference = taxonReference;
         return this;
     }
 
     @JsonProperty("release")
-    public java.lang.String getRelease() {
+    public String getRelease() {
         return release;
     }
 
     @JsonProperty("release")
-    public void setRelease(java.lang.String release) {
+    public void setRelease(String release) {
         this.release = release;
     }
 
-    public FastaGFFToGenomeParams withRelease(java.lang.String release) {
+    public FastaGFFToGenomeParams withRelease(String release) {
         this.release = release;
-        return this;
-    }
-
-    @JsonProperty("genetic_code")
-    public Long getGeneticCode() {
-        return geneticCode;
-    }
-
-    @JsonProperty("genetic_code")
-    public void setGeneticCode(Long geneticCode) {
-        this.geneticCode = geneticCode;
-    }
-
-    public FastaGFFToGenomeParams withGeneticCode(Long geneticCode) {
-        this.geneticCode = geneticCode;
         return this;
     }
 
     @JsonProperty("type")
-    public java.lang.String getType() {
+    public String getType() {
         return type;
     }
 
     @JsonProperty("type")
-    public void setType(java.lang.String type) {
+    public void setType(String type) {
         this.type = type;
     }
 
-    public FastaGFFToGenomeParams withType(java.lang.String type) {
+    public FastaGFFToGenomeParams withType(String type) {
         this.type = type;
-        return this;
-    }
-
-    @JsonProperty("metadata")
-    public Map<String, String> getMetadata() {
-        return metadata;
-    }
-
-    @JsonProperty("metadata")
-    public void setMetadata(Map<String, String> metadata) {
-        this.metadata = metadata;
-    }
-
-    public FastaGFFToGenomeParams withMetadata(Map<String, String> metadata) {
-        this.metadata = metadata;
         return this;
     }
 
     @JsonAnyGetter
-    public Map<java.lang.String, Object> getAdditionalProperties() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     @JsonAnySetter
-    public void setAdditionalProperties(java.lang.String name, Object value) {
+    public void setAdditionalProperties(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
 
     @Override
-    public java.lang.String toString() {
-        return ((((((((((((((((((((((((("FastaGFFToGenomeParams"+" [fastaFile=")+ fastaFile)+", gffFile=")+ gffFile)+", genomeName=")+ genomeName)+", workspaceName=")+ workspaceName)+", source=")+ source)+", taxonWsname=")+ taxonWsname)+", taxonReference=")+ taxonReference)+", release=")+ release)+", geneticCode=")+ geneticCode)+", type=")+ type)+", metadata=")+ metadata)+", additionalProperties=")+ additionalProperties)+"]");
+    public String toString() {
+        return ((((((((((((((((((((("FastaGFFToGenomeParams"+" [fastaFile=")+ fastaFile)+", gffFile=")+ gffFile)+", genomeName=")+ genomeName)+", workspaceName=")+ workspaceName)+", source=")+ source)+", taxonWsname=")+ taxonWsname)+", taxonReference=")+ taxonReference)+", release=")+ release)+", type=")+ type)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

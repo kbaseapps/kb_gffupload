@@ -566,12 +566,11 @@ def upload_genome(shock_service_url=None,
 
     logger.info("Attempting Genome save for %s" % (core_genome_name))
     workspace_id = dfUtil.ws_name_to_id(workspace_name)
-    genome_info =  dfUtil.save_objects({"id":workspace_id, "objects":[ {"name": core_genome_name, "type": "KBaseGenomes.Genome", "data": genome} ]})
+    genome_info =  dfUtil.save_objects({"id":workspace_id, "objects":[ {"name": core_genome_name, "type": "KBaseGenomes.Genome", "data": genome} ]})[0]
     logger.info("Genome saved for %s" % (core_genome_name))
 
-    return { 'genome_info': genome_info[0] }
-#        'report_name': report_info['name'],
-#        'report_ref': report_info['ref']
+    return { 'genome_info': genome_info,
+             'report_string': ""}
 
 if __name__ == "__main__":
 

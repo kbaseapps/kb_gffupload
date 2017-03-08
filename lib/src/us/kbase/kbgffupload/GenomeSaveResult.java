@@ -19,12 +19,18 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("com.googlecode.jsonschema2pojo")
 @JsonPropertyOrder({
-    "genome_ref"
+    "genome_ref",
+    "report_name",
+    "report_ref"
 })
 public class GenomeSaveResult {
 
     @JsonProperty("genome_ref")
     private String genomeRef;
+    @JsonProperty("report_name")
+    private String reportName;
+    @JsonProperty("report_ref")
+    private String reportRef;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("genome_ref")
@@ -42,6 +48,36 @@ public class GenomeSaveResult {
         return this;
     }
 
+    @JsonProperty("report_name")
+    public String getReportName() {
+        return reportName;
+    }
+
+    @JsonProperty("report_name")
+    public void setReportName(String reportName) {
+        this.reportName = reportName;
+    }
+
+    public GenomeSaveResult withReportName(String reportName) {
+        this.reportName = reportName;
+        return this;
+    }
+
+    @JsonProperty("report_ref")
+    public String getReportRef() {
+        return reportRef;
+    }
+
+    @JsonProperty("report_ref")
+    public void setReportRef(String reportRef) {
+        this.reportRef = reportRef;
+    }
+
+    public GenomeSaveResult withReportRef(String reportRef) {
+        this.reportRef = reportRef;
+        return this;
+    }
+
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
@@ -54,7 +90,7 @@ public class GenomeSaveResult {
 
     @Override
     public String toString() {
-        return ((((("GenomeSaveResult"+" [genomeRef=")+ genomeRef)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((("GenomeSaveResult"+" [genomeRef=")+ genomeRef)+", reportName=")+ reportName)+", reportRef=")+ reportRef)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }

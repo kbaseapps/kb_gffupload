@@ -123,24 +123,20 @@ sub new
 $params is a kb_gffupload.FastaGFFToGenomeParams
 $result is a kb_gffupload.GenomeSaveResult
 FastaGFFToGenomeParams is a reference to a hash where the following keys are defined:
-	fasta_file has a value which is a kb_gffupload.File
-	gff_file has a value which is a kb_gffupload.File
+	fasta_file has a value which is a kb_gffupload.File_Path
+	gff_file has a value which is a kb_gffupload.File_Path
 	genome_name has a value which is a string
 	workspace_name has a value which is a string
 	source has a value which is a string
 	taxon_wsname has a value which is a string
 	taxon_reference has a value which is a string
 	release has a value which is a string
-	genetic_code has a value which is an int
 	type has a value which is a string
-	metadata has a value which is a kb_gffupload.usermeta
-File is a reference to a hash where the following keys are defined:
-	path has a value which is a string
-	shock_id has a value which is a string
-	ftp_url has a value which is a string
-usermeta is a reference to a hash where the key is a string and the value is a string
+File_Path is a string
 GenomeSaveResult is a reference to a hash where the following keys are defined:
 	genome_ref has a value which is a string
+	report_name has a value which is a string
+	report_ref has a value which is a string
 
 </pre>
 
@@ -151,24 +147,20 @@ GenomeSaveResult is a reference to a hash where the following keys are defined:
 $params is a kb_gffupload.FastaGFFToGenomeParams
 $result is a kb_gffupload.GenomeSaveResult
 FastaGFFToGenomeParams is a reference to a hash where the following keys are defined:
-	fasta_file has a value which is a kb_gffupload.File
-	gff_file has a value which is a kb_gffupload.File
+	fasta_file has a value which is a kb_gffupload.File_Path
+	gff_file has a value which is a kb_gffupload.File_Path
 	genome_name has a value which is a string
 	workspace_name has a value which is a string
 	source has a value which is a string
 	taxon_wsname has a value which is a string
 	taxon_reference has a value which is a string
 	release has a value which is a string
-	genetic_code has a value which is an int
 	type has a value which is a string
-	metadata has a value which is a kb_gffupload.usermeta
-File is a reference to a hash where the following keys are defined:
-	path has a value which is a string
-	shock_id has a value which is a string
-	ftp_url has a value which is a string
-usermeta is a reference to a hash where the key is a string and the value is a string
+File_Path is a string
 GenomeSaveResult is a reference to a hash where the following keys are defined:
 	genome_ref has a value which is a string
+	report_name has a value which is a string
+	report_ref has a value which is a string
 
 
 =end text
@@ -316,7 +308,7 @@ sub _validate_version {
 
 
 
-=head2 File
+=head2 File_Path
 
 =over 4
 
@@ -327,48 +319,14 @@ sub _validate_version {
 =begin html
 
 <pre>
-a reference to a hash where the following keys are defined:
-path has a value which is a string
-shock_id has a value which is a string
-ftp_url has a value which is a string
-
+a string
 </pre>
 
 =end html
 
 =begin text
 
-a reference to a hash where the following keys are defined:
-path has a value which is a string
-shock_id has a value which is a string
-ftp_url has a value which is a string
-
-
-=end text
-
-=back
-
-
-
-=head2 usermeta
-
-=over 4
-
-
-
-=item Definition
-
-=begin html
-
-<pre>
-a reference to a hash where the key is a string and the value is a string
-</pre>
-
-=end html
-
-=begin text
-
-a reference to a hash where the key is a string and the value is a string
+a string
 
 =end text
 
@@ -389,6 +347,8 @@ a reference to a hash where the key is a string and the value is a string
 <pre>
 a reference to a hash where the following keys are defined:
 genome_ref has a value which is a string
+report_name has a value which is a string
+report_ref has a value which is a string
 
 </pre>
 
@@ -398,6 +358,8 @@ genome_ref has a value which is a string
 
 a reference to a hash where the following keys are defined:
 genome_ref has a value which is a string
+report_name has a value which is a string
+report_ref has a value which is a string
 
 
 =end text
@@ -414,19 +376,15 @@ genome_ref has a value which is a string
 
 =item Description
 
+fasta_file - file containing assembled contigs/chromosomes
+gff_file - file containing gene models (_must_ contain 'gene', 'mRNA', and 'CDS')
 genome_name - becomes the name of the object
 workspace_name - the name of the workspace it gets saved to.
 source - Source of the file typically something like RefSeq or Ensembl
 taxon_ws_name - where the reference taxons are : ReferenceTaxons
-taxon_reference - if defined, will try to link the Genome to the specified
-taxonomy object insteas of performing the lookup during upload
-release - Release or version number of the data 
-  per example Ensembl has numbered releases of all their data: Release 31
-generate_ids_if_needed - If field used for feature id is not there, 
-  generate ids (default behavior is raising an exception)
-genetic_code - Genetic code of organism. Overwrites determined GC from 
-  taxon object
-type - Reference, Representative or User upload
+taxon_reference - if defined, will try to link the Genome to the specified taxonomy object
+release - Release or version number of the data (i.e.Ensembl Release 31 or Phytozome Release V11)
+type - Reference, Representative or User
 
 
 =item Definition
@@ -435,17 +393,15 @@ type - Reference, Representative or User upload
 
 <pre>
 a reference to a hash where the following keys are defined:
-fasta_file has a value which is a kb_gffupload.File
-gff_file has a value which is a kb_gffupload.File
+fasta_file has a value which is a kb_gffupload.File_Path
+gff_file has a value which is a kb_gffupload.File_Path
 genome_name has a value which is a string
 workspace_name has a value which is a string
 source has a value which is a string
 taxon_wsname has a value which is a string
 taxon_reference has a value which is a string
 release has a value which is a string
-genetic_code has a value which is an int
 type has a value which is a string
-metadata has a value which is a kb_gffupload.usermeta
 
 </pre>
 
@@ -454,17 +410,15 @@ metadata has a value which is a kb_gffupload.usermeta
 =begin text
 
 a reference to a hash where the following keys are defined:
-fasta_file has a value which is a kb_gffupload.File
-gff_file has a value which is a kb_gffupload.File
+fasta_file has a value which is a kb_gffupload.File_Path
+gff_file has a value which is a kb_gffupload.File_Path
 genome_name has a value which is a string
 workspace_name has a value which is a string
 source has a value which is a string
 taxon_wsname has a value which is a string
 taxon_reference has a value which is a string
 release has a value which is a string
-genetic_code has a value which is an int
 type has a value which is a string
-metadata has a value which is a kb_gffupload.usermeta
 
 
 =end text
