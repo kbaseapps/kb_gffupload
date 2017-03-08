@@ -73,8 +73,8 @@ class FastaGFFToGenome:
         info = result['genome_info']
         details = {
             'genome_ref':  str(info[6]) + '/' + str(info[0]) + '/' + str(info[4]),
-            'report_name': report_info['report_name'],
-            'report_ref':  report_info['report_ref']
+            'report_name': report_info['name'],
+            'report_ref':  report_info['ref']
         }
 
         return details
