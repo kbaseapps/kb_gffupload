@@ -3,6 +3,7 @@ import unittest
 import os  # noqa: F401
 import json  # noqa: F401
 import time
+import shutil
 import requests
 
 from os import environ
@@ -76,23 +77,39 @@ class kb_gffuploadTest(unittest.TestCase):
     # NOTE: According to Python unittest naming rules test method names should start from 'test'. # noqa
     def test_simple_upload(self):
         gff_upload = self.getImpl()
-        fasta_path = "data/Test_v1.0.fa.gz"
-        gff_path = "data/Test_v1.0.gene.gff3.gz"
+
+        data_dir="data/"
+        scratch_data_dir = os.path.join(self.scratch, data_dir)
+        shutil.copytree(data_dir, scratch_data_dir)
+
+        fasta_file = "Test_v1.0.fa"
+        gff_file = "Test_v1.0.gene.gff3"
+
+        fasta_path = scratch_data_dir+"/"+fasta_file
+        gff_path = scratch_data_dir+"/"+gff_file
+
+        shutil.copy(data_dir+"/"+fasta_file, fasta_path)
+        shutil.copy(data_dir+"/"+gff_file, gff_path)
+
         ws_obj_name = 'MyGenome'
         ws_name = self.getWsName()
+        scientific_name = "Populus trichocarpa"
 
         ### Test for a Local Function Call
         print('attempting upload via local function directly')
 
         result = gff_upload.fasta_gff_to_genome(self.getContext(), 
             {
-                'fasta_file' : { 'path': fasta_path },
-                'gff_file' : { 'path' : gff_path },
+                'fasta_file' : fasta_path,
+                'gff_file' : gff_path,
                 'workspace_name':ws_name,
-                'genome_name':ws_obj_name
+                'genome_name':ws_obj_name,
+                'scientific_name':scientific_name
             })[0]
         pprint(result)
         self.assertIsNotNone(result['genome_ref'])
+
+        shutil.rmtree(scratch_data_dir)
 
         # Check returned data with
         # self.assertEqual(ret[...], ...) or other unittest methods

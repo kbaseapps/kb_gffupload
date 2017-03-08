@@ -51,26 +51,51 @@ def convert_ftr_object(old_ftr,contig):
     new_ftr["location"] = [[old_ftr["contig"],old_ftr["start"],old_ftr["strand"],len(dna_sequence)]]
     return new_ftr
 
-def upload_genome(shock_service_url=None,
-                  handle_service_url=None,
-                  workspace_service_url=None,
-                  callback_url=None,
-
-                  input_gff_file=None,
-                  input_fasta_file=None,
-                  
-                  workspace_name=None,
-                  core_genome_name=None,
-
-                  genome_type=None,
-                  scientific_name=None,
-                  taxonomy=None,
-                  taxon_reference=None,
-                  source=None):
+def upload_genome(shock_service_url=None,handle_service_url=None,workspace_service_url=None,callback_url=None,
+                  input_gff_file=None,input_fasta_file=None,
+                  workspace_name=None,core_genome_name=None,scientific_name="unknown_taxon",
+                  taxon_wsname='ReferenceTaxons',taxon_reference=None,
+                  source=None,release=None,genome_type=None):
 
     assembly_ref = None
     gff_handle_ref = None
     time_string = str(datetime.datetime.fromtimestamp(time.time()).strftime('%Y_%m_%d_%H_%M_%S'))
+
+    dfUtil = DataFileUtil(callback_url)
+
+    ###########################################
+    #Retrieve taxon
+    #Taxon lookup dependent on full genus
+    #Example: Athaliana    Arabidopsis thaliana
+    ###########################################
+    #default to 
+    taxon_id=-1
+    taxon_object_name="unknown_taxon"
+
+    #Retrieve lookup object if scientific name provided
+    if(taxon_reference is None and scientific_name is not "unknown_taxon"):
+        #Need to retrieve taxon lookup object then find taxon id
+        taxon_lookup = dfUtil.get_objects( {'object_refs':[taxon_wsname+"/taxon_lookup"],
+                                            'ignore_errors':0})['data'][0]['data']['taxon_lookup']
+
+        if(scientific_name[0:3] in taxon_lookup and scientific_name in taxon_lookup[scientific_name[0:3]]):
+            taxon_id=taxon_lookup[scientific_name[0:3]][scientific_name]
+            taxon_object_name = "%s_taxon" % (str(taxon_id))
+
+    #Retrieve Taxon object
+    taxon_info={}
+    if(taxon_reference is None):
+        taxon_info = dfUtil.get_objects( {'object_refs':[taxon_wsname+"/"+taxon_object_name],
+                                          'ignore_errors':0})['data'][0]
+        taxon_reference = "%s/%s/%s" % (taxon_info['info'][6], taxon_info['info'][0], taxon_info['info'][4])
+    else:
+        taxon_info = dfUtil.get_objects([{"object_refs":[taxon_reference],
+                                          'ignore_errors':0}])['data'][0]
+
+    taxonomy = taxon_info['data']['scientific_lineage']
+    ###########################################
+    #End taxonomy retrieval
+    ###########################################
 
     ###########################################
     #Create logger
@@ -98,10 +123,9 @@ def upload_genome(shock_service_url=None,
     assembly = {"contigs":{},"dna_size":0,"gc_content":0,"md5":[],"base_counts":{}}
     contig_seq_start=0
 
-#    input_file_handle = gzip.open(input_fasta_file,'rb')
     input_file_handle = open(input_fasta_file,'rb')
-    # ditch the boolean (x[0]) and just keep the header or sequence since
-    # we know they alternate.
+
+    # alternate header and sequence
     faiter = (x[1] for x in itertools.groupby(input_file_handle, lambda line: line[0] == ">"))
     for header in faiter:
         # drop the ">"
@@ -550,8 +574,6 @@ def upload_genome(shock_service_url=None,
     #UserMeta['Version']=version
     #UserMeta['url']='';
 
-    dfUtil = DataFileUtil(callback_url)
-
     if(gff_handle_ref == None):
         token = os.environ.get('KB_AUTH_TOKEN') 
         file_upload = dfUtil.file_to_shock({'file_path' : input_gff_file,'make_handle': 1,'pack' : "gzip"})
@@ -607,19 +629,7 @@ if __name__ == "__main__":
             subprocess.check_output(["gzip","-f",check_file])
             check_file+=".gz"
 
-    ws_client = biokbase.workspace.client.Workspace(workspace_service_url)
-
-    #Taxon reference
-    tax_id=0
-    taxon_object_name = "unknown_taxon"
-    taxon_info = ws_client.get_objects([{"workspace":"ReferenceTaxons", 
-                                         "name": taxon_object_name}])[0]
-
-    taxon_ref = "%s/%s/%s" % (taxon_info['info'][6], taxon_info['info'][0], taxon_info['info'][4])
-    display_sc_name = taxon_info['data']['scientific_name']
-    taxonomy = taxon_info['data']['scientific_lineage']
-
-    genome_type="User"
+    genome_type="User upload"
     upload_genome(input_gff_file=args.input_gff_file,input_fasta_file=args.input_fasta_file,workspace_name=args.ws_name,
                   shock_service_url=shock_service_url,handle_service_url=handle_service_url,workspace_service_url=workspace_service_url,
                   taxon_reference=taxon_ref,taxonomy=taxonomy,source=args.source,core_genome_name=args.name,genome_type=genome_type,scientific_name=display_sc_name)

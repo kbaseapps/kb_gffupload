@@ -18,10 +18,11 @@ module kb_gffupload {
     genome_name - becomes the name of the object
     workspace_name - the name of the workspace it gets saved to.
     source - Source of the file typically something like RefSeq or Ensembl
-    taxon_ws_name - where the reference taxons are : ReferenceTaxons
+    taxon_wsname - where the reference taxons are : ReferenceTaxons
+    scientific_name - Full name of organism, including genus, to be used with taxon lookup
     taxon_reference - if defined, will try to link the Genome to the specified taxonomy object
     release - Release or version number of the data (i.e.Ensembl Release 31 or Phytozome Release V11)
-    type - Reference, Representative or User
+    type - Reference, Representative or User upload
     */
     typedef structure {
         File_Path fasta_file;
@@ -30,9 +31,11 @@ module kb_gffupload {
         string genome_name;
         string workspace_name;
 
-        string source;
         string taxon_wsname;
+	string scientific_name;
         string taxon_reference;
+
+        string source;
 	string release;
 	string type;
     } FastaGFFToGenomeParams;
